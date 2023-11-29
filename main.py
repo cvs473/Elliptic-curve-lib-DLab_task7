@@ -1,6 +1,6 @@
 import unittest
 from ec import EllipticCurve, POINT_ON_INF
-from wrapper import ECPoint, isOnCurveCheck, scalarMult
+from wrapper import ECPoint, isOnCurveCheck, scalarMult, ECPointToString, StringToECPoint
 from random import randrange
 
 class TestEllipticCurve(unittest.TestCase):
@@ -35,7 +35,13 @@ class TestEllipticCurve(unittest.TestCase):
         H4 = scalarMult(self.P_224, d, H3)
         
         self.assertTrue(H2.x == H4.x and H2.y == H4.y)
-
+    
+    def test_serialization(self):
+        P = ECPoint(3, 3)
+        stored = ECPointToString(P)
+        P.x *= 2
+        oldP = StringToECPoint(stored)
+        self.assertFalse(oldP.x == P.x, oldP.y == P.y)
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,6 +1,7 @@
 from ec import EllipticCurve, POINT_ON_INF
 from dataclasses import dataclass
 from random import randrange
+import pickle
 
 @dataclass
 class ECPoint:
@@ -47,3 +48,11 @@ def inverseModP(self: EllipticCurve, x):
 		if self.reduceModP(x) == 0:
 			return None
 		return pow(x, self.p - 2, self.p)
+
+def ECPointToString(obj: ECPoint):
+    serialized = pickle.dumps(obj)
+    return serialized
+
+def StringToECPoint(obj: bytes):
+    deserialized = pickle.loads(obj)
+    return deserialized 
